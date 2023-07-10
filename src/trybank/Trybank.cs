@@ -4,7 +4,7 @@ public class Trybank
 {
     public bool Logged;
     public int loggedUser;
-    
+
     //0 -> Número da conta
     //1 -> Agência
     //2 -> Senha
@@ -23,7 +23,29 @@ public class Trybank
     // 1. Construa a funcionalidade de cadastrar novas contas
     public void RegisterAccount(int number, int agency, int pass)
     {
-        throw new NotImplementedException();
+        if (IsAccountInUse(number, agency))
+        {
+            throw new ArgumentException("A conta já está sendo usada!");
+        }
+
+        Bank[registeredAccounts, 0] = number;
+        Bank[registeredAccounts, 1] = agency;
+        Bank[registeredAccounts, 2] = pass;
+        Bank[registeredAccounts, 3] = 0;
+        registeredAccounts++;
+
+    }
+
+    private bool IsAccountInUse(int number, int agency)
+    {
+        for (int i = 0; i < registeredAccounts; i++)
+        {
+            if (Bank[i, 0] == number && Bank[i, 1] == agency)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     // 2. Construa a funcionalidade de fazer Login
@@ -41,7 +63,7 @@ public class Trybank
     // 4. Construa a funcionalidade de checar o saldo
     public int CheckBalance()
     {
-        throw new NotImplementedException();   
+        throw new NotImplementedException();
     }
 
     // 5. Construa a funcionalidade de depositar dinheiro
@@ -62,5 +84,5 @@ public class Trybank
         throw new NotImplementedException();
     }
 
-   
+
 }
