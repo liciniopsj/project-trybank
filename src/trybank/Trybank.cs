@@ -51,7 +51,31 @@ public class Trybank
     // 2. Construa a funcionalidade de fazer Login
     public void Login(int number, int agency, int pass)
     {
-        throw new NotImplementedException();
+        string accountKey = $"{number} + {agency}";
+        if (Logged)
+        {
+            throw new AccessViolationException("Usuário já está logado");
+        }
+
+        for (int i = 0; i < registeredAccounts; i++)
+        {
+            string registeredAccountsKey = $"{Bank[i,0]} + {Bank[i, 1]}"; 
+            if (accountKey == registeredAccountsKey)
+            {
+                
+                if (Bank[i, 2] == pass)
+                {
+                    Logged = true;
+                    loggedUser = i;
+                    return;
+                }
+                else
+                {
+                    throw new ArgumentException("Senha incorreta");
+                }
+            }
+        }
+        throw new ArgumentException("Agência + Conta não encontrada");
     }
 
     // 3. Construa a funcionalidade de fazer Logout
