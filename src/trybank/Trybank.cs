@@ -48,8 +48,9 @@ public class Trybank
         return false;
     }
 
-    private void LoggedStatusCheck(){
-        if(!Logged) throw new AccessViolationException("Usuário não está logado");
+    private void LoggedStatusCheck()
+    {
+        if (!Logged) throw new AccessViolationException("Usuário não está logado");
     }
 
     // 2. Construa a funcionalidade de fazer Login
@@ -63,10 +64,10 @@ public class Trybank
 
         for (int i = 0; i < registeredAccounts; i++)
         {
-            string registeredAccountsKey = $"{Bank[i,0]} + {Bank[i, 1]}"; 
+            string registeredAccountsKey = $"{Bank[i, 0]} + {Bank[i, 1]}";
             if (accountKey == registeredAccountsKey)
             {
-                
+
                 if (Bank[i, 2] == pass)
                 {
                     Logged = true;
@@ -109,13 +110,30 @@ public class Trybank
     // 6. Construa a funcionalidade de sacar dinheiro
     public void Withdraw(int value)
     {
-        throw new NotImplementedException();
+        LoggedStatusCheck();
+        if (Bank[loggedUser, 3] > value)
+        {
+            Bank[loggedUser, 3] -= value;
+        }
+        else
+        {
+            throw new InvalidOperationException("Saldo insuficiente");
+        }
     }
 
     // 7. Construa a funcionalidade de transferir dinheiro entre contas
     public void Transfer(int destinationNumber, int destinationAgency, int value)
     {
-        throw new NotImplementedException();
+        LoggedStatusCheck();
+        Withdraw(value);
+        for (int i = 0; i < registeredAccounts; i++)
+        {
+            if (Bank[i, 0] == destinationNumber && Bank[i, 1] == destinationAgency)
+            {
+                Bank[i, 3] += value;
+                return;
+            }
+        }
     }
 
 
